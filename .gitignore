@@ -1,0 +1,5 @@
+secrets.json
+**/migrations/
+django.crt
+django.key
+db.sqlite3
