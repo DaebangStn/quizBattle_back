@@ -3,3 +3,6 @@ secrets.json
 django.crt
 django.key
 db.sqlite3
+static
+*.pyc
+__pycache__/
