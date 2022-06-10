@@ -29,3 +29,9 @@ class UserNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username']
+
+
+class UserBriefSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email']

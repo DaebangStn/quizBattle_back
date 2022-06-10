@@ -1,7 +1,10 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from app.serializers.userSerializers import CreateUserSerializer
+from app.serializers.userSerializers import CreateUserSerializer, \
+    UserBriefSerializer, UserSerializer
+from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 class RegisterUser(generics.GenericAPIView):
@@ -28,3 +31,28 @@ class RegisterUser(generics.GenericAPIView):
             "token": token.key
         }
         return Response(body, status=status.HTTP_201_CREATED)
+
+
+class UserViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = User.objects.all()
+        serializer = UserBriefSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def get_permissions(self):
+        if self.action == 'list':
+            permissions_classes = [IsAuthenticated]
+        elif self.action == 'retrieve':
+            permissions_classes = [IsAuthenticated]
+        else:
+            permissions_classes = [IsAdminUser]
+
+        return [permission() for permission in permissions_classes]
+
+
+user_list = UserViewSet.as_view({"get": "list"})
+user_detail = UserViewSet.as_view({"get": "retrieve"})

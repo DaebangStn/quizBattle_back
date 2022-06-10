@@ -78,15 +78,17 @@ MIDDLEWARE = [
 ]
 
 # CORS Config
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://www.leemworld.shop'
+]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = CORS_ORIGIN_WHITELIST
 
 ROOT_URLCONF = 'quizBattle_back.urls'
 
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-]
+AUTHENTICATION_BACKENDS = ['app.backends.EmailBackend']
 
 TEMPLATES = [
     {
