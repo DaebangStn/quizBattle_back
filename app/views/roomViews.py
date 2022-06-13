@@ -149,6 +149,14 @@ class RoomViewSet(viewsets.ViewSet):
         serializer = RetrieveRoomSerializer(room)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
+    @action(detail=True, methods=['get'])
+    def list_available(self, request):
+        user = request.user
+        serializer = ListRoomSerializer(user.room_participants.all(), many=True)
+        print(user)
+        print(user.room_participants.all())
+        return Response(serializer.data)
+
     def get_permissions(self):
         if self.action == 'list':
             permissions_classes = [IsAuthenticated]
@@ -158,6 +166,8 @@ class RoomViewSet(viewsets.ViewSet):
             permissions_classes = [IsParticipants]
         elif self.action == 'modify':
             permissions_classes = [IsHost]
+        elif self.action == 'list_available':
+            permissions_classes = [IsAuthenticated]
         elif self.action == 'destroy':
             permissions_classes = [IsHost]
         else:
@@ -173,3 +183,4 @@ room_detail = RoomViewSet.as_view({
     'put': 'modify',
     'delete': 'destroy'
 })
+room_available = RoomViewSet.as_view({'get':'list_available'})
