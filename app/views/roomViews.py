@@ -153,8 +153,6 @@ class RoomViewSet(viewsets.ViewSet):
     def list_available(self, request):
         user = request.user
         serializer = ListRoomSerializer(user.room_participants.all(), many=True)
-        print(user)
-        print(user.room_participants.all())
         return Response(serializer.data)
 
     def get_permissions(self):
