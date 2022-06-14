@@ -139,7 +139,6 @@ class RoomViewSet(viewsets.ViewSet):
 
         if _participants_username is not None:
             room.participants.clear()
-            print(room.participants.all())
             room.participants.add(request.user)
             for username in _participants_username.split(","):
                 participant = User.objects.get(username=username)
@@ -181,4 +180,4 @@ room_detail = RoomViewSet.as_view({
     'put': 'modify',
     'delete': 'destroy'
 })
-room_available = RoomViewSet.as_view({'get':'list_available'})
+room_available = RoomViewSet.as_view({'get': 'list_available'})
