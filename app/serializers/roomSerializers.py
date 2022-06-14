@@ -14,7 +14,7 @@ class CreateRoomSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         name = validated_data['name']
-        slug = slugify(name)
+        slug = slugify(name, allow_unicode=True)
         host = User.objects.get(username=validated_data['host_username'])
         room = Room.objects.create(
             name=name,

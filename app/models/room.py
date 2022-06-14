@@ -4,8 +4,8 @@ import random
 
 
 class Room(models.Model):
-    name = models.CharField(max_length=50, blank=False, unique=True)
-    slug = models.SlugField(max_length=50, blank=False, unique=True)
+    name = models.CharField(max_length=50, blank=False, unique=True, )
+    slug = models.SlugField(max_length=50, blank=False, unique=True, allow_unicode=True)
     host = models.ForeignKey(User, related_name='room_host', null=False, blank=False, on_delete=models.CASCADE)
     participants = models.ManyToManyField(User, related_name='room_participants')
     type = models.PositiveSmallIntegerField(default=0)
