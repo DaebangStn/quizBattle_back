@@ -9,6 +9,7 @@ from app.views.authViews import CustomAuthToken
 urlpatterns = [
     path('signin/', CustomAuthToken.as_view()),
     path('signup/', RegisterUser.as_view()),
+    path('password/reset/', include('django_rest_passwordreset.urls'), name='password_reset'),
     path('user/detail/', user_detail),
     path('user/list/', user_list),
     path('room/create/', room_create),

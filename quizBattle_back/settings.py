@@ -43,6 +43,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['www.leemworld.shop', 'localhost']
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = get_secret("GMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_secret("GMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Application definition
 
@@ -58,6 +64,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_rest_passwordreset',
 ]
 
 REST_FRAMEWORK = {
