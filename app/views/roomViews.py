@@ -7,6 +7,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from app.models.room import Room
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 class IsHost(permissions.BasePermission):
@@ -87,6 +88,7 @@ class RoomStart(generics.GenericAPIView):
 
 class RoomViewSet(viewsets.ViewSet):
     def get_object(self, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         queryset = Room.objects.all()
         room = get_object_or_404(queryset, slug=slug)
         self.check_object_permissions(self.request, room)
@@ -98,11 +100,13 @@ class RoomViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         room = self.get_object(slug)
         serializer = RetrieveRoomSerializer(room)
         return Response(serializer.data)
 
     def update(self, request, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         room = self.get_object(slug)
         answer = request.data.get('answer', None)
         if answer is None:
@@ -117,6 +121,7 @@ class RoomViewSet(viewsets.ViewSet):
             return Response(body, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         room = self.get_object(slug)
         name = room.name
         room.delete()
@@ -125,6 +130,7 @@ class RoomViewSet(viewsets.ViewSet):
 
     @action(detail=True, methods=['post'])
     def modify(self, request, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         room = self.get_object(slug)
         _type = request.data.get('type', None)
         _participants_username = request.data.get('participants_username', None)
