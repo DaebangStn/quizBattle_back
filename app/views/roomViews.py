@@ -67,6 +67,7 @@ class RoomStart(generics.GenericAPIView):
     permission_classes = [IsHost]
 
     def get(self, request, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         room = self.get_object(slug)
 
         if room.round > 0:
@@ -80,6 +81,7 @@ class RoomStart(generics.GenericAPIView):
                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_object(self, slug=None):
+        slug = slugify(slug, allow_unicode=True)
         queryset = self.get_queryset()
         room = get_object_or_404(queryset, slug=slug)
         self.check_object_permissions(self.request, room)
